@@ -1,0 +1,33 @@
+I think this is a pretty straightforward idea...
+
+Double3 - abstract class:
+	Vector3
+	Point3
+
+Geometry - abstract class, methods: intercepts(point);
+	Sphere
+	Box
+
+Shapes:
+	Geometry
+
+Camera:
+	Location
+	LookAt
+	FovX
+	FovY
+	Film
+
+Light source:
+	Intensity
+	Location
+
+Scene:
+	Camera
+	Lights
+	Shapes
+	render()
+		-ray casts from camera for every point on screen
+			-if it hits a point, ray cast to all lights
+			-take sum of distances from camera to point and point to light
+			-multiply by intensity with distance falloff
