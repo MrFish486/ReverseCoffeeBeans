@@ -28,6 +28,9 @@ public class Vector3 extends Double3 {
 	public Vector3 add (Spherical other) {
 		return this.add(other.toVector3());
 	}
+	public Vector3 multiply (double s) {
+		return new Vector3(this.x * s, this.y * s, this.z * s);
+	}
 	public Vector3 clone () {
 		return new Vector3(this.x, this.y, this.z);
 	}
