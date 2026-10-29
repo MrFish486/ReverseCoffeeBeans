@@ -20,6 +20,6 @@ public class Box extends Geometry {
 		this.depth = (double) depth;
 	}
 	public boolean intercepts (Point3 point) {
-		return point.x > this.pointition.x - (this.width / 2) && point.x < this.pointition.x + (this.width / 2) && point.y > this.pointition.y - (this.height / 2) && point.y < this.pointition.y + (this.width / 2) && point.z > this.pointition.z - (this.height / 2) && point.z < this.pointition.z + (this.width / 2);
+		return point.x > this.position.x - (this.width / 2) && point.x < this.position.x + (this.width / 2) && point.y > this.position.y - (this.height / 2) && point.y < this.position.y + (this.width / 2) && point.z > this.position.z - (this.height / 2) && point.z < this.position.z + (this.width / 2);
 	}
 }

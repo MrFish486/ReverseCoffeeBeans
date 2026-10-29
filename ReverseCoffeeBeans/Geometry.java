@@ -1,5 +1,5 @@
 package ReverseCoffeeBeans;
 
 public abstract class Geometry {
-	public boolean intercepts (Point3);
+	public abstract boolean intercepts (Point3 point);
 }

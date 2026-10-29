@@ -12,6 +12,6 @@ public class Sphere extends Geometry {
 	}
 	public boolean intercepts (Point3 point) {
 		Vector3 v = this.position.to(point);
-		return (magnitude <= radius);
+		return (v.magnitude() <= radius);
 	}
 }

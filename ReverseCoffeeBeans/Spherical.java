@@ -1,4 +1,4 @@
-package ReverseCoffeeBeans
+package ReverseCoffeeBeans;
 
 public class Spherical {
 	public double r;
@@ -8,6 +8,9 @@ public class Spherical {
 		this.r = r;
 		this.theta = theta;
 		this.phi = phi;
+	}
+	public Spherical add (Spherical other) {
+		return new Spherical(this.r + other.r, this.theta + other.theta, this.phi + other.phi);
 	}
 	public Vector3 toVector3 () {
 		return new Vector3(this.r * Math.sin(this.theta) * Math.cos(this.phi), r * Math.sin(theta) * Math.sin(this.phi), r * Math.cos(theta));
