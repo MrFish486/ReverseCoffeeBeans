@@ -7,8 +7,8 @@ public class Scene {
 	public double stepIncrement = 0.1;
 	public double lightStepIncrement = 0.1;
 	public double farCutoff = 20;
-	public double lightCastInitialDistance = 0;
-	public boolean ignoreSelfOnLightCast = true;
+	public double lightCastInitialDistance = 1;
+	public boolean ignoreSelfOnLightCast = false;
 	public Scene (Geometry[] geometries, PointLight[] lights, Camera camera) {
 		this.geometries = geometries;
 		this.lights = lights;
@@ -37,7 +37,7 @@ public class Scene {
 							if (!this.geometries[objN].translucent) {
 								hit = true;
 								for (int lghtN = 0; lghtN < this.lights.length; lghtN ++) {
-									Vector3 betweenLightAndHit = Vector3.between(trace, this.lights[lghtN].position);
+									Vector3 betweenLightAndHit = Vector3.between(this.lights[lghtN].position, trace);
 									
 									if (betweenLightAndHit.magnitude() > this.lights[lghtN].range) return;
 
@@ -61,7 +61,6 @@ public class Scene {
 											if (this.geometries[objNL].intercepts(lTrace)) {
 												hitL = true;
 												//System.out.println("object hit while tracing to light. :C");
-												System.out.println(this.geometries[objNL]);
 												break;
 											}
 										}
@@ -69,7 +68,7 @@ public class Scene {
 										if (hitL) break;
 									}
 
-									if (!hitL) {
+/*									if (!hitL) {
 										double prog = (this.lights[lghtN].range - betweenLightAndHit.magnitude());
 										if (prog < Byte.MIN_VALUE) prog = 0;
 										prog /= this.lights[lghtN].range;
@@ -77,6 +76,23 @@ public class Scene {
 										//System.out.println(prog * this.lights[lghtN].intensity * this.camera.film.sensitivity);
 										//System.out.println((byte) ((this.camera.film.sensitivity * prog * this.lights[lghtN].intensity) + 128));
 										double brightness = this.camera.film.sensitivity * prog * this.lights[lghtN].intensity;
+										if (brightness > 256) brightness = 255;
+										this.camera.film.add(x, y, (byte) brightness);
+									}*/
+									if (!hitL) {
+										Vector3 betweenCameraAndHit = Vector3.between(this.camera.position, trace);
+										double totalDistance = betweenLightAndHit.magnitude() + betweenCameraAndHit.magnitude();
+										// Here's a good way to think about this. A point light is supposed to emulate the surface
+										// of a sphere which is emitting light, so if the point light is emitting a constant amount
+										// of light, E, and the formula for the surface area of a sphere is 4*pi*r^2, then the
+										// brightness of the light emitted should be proportional to E / r^2. In this case, r is
+										// the distance between the light and hit location on the object.
+										// 
+										// Additionally, r will be substituted for the distance between the light and the object
+										// plus the distance between the camera and the object.
+										// 
+										// Let's hope this works...
+										double brightness = this.camera.film.sensitivity * (this.lights[lghtN].intensity / (totalDistance * totalDistance));
 										if (brightness > 256) brightness = 255;
 										this.camera.film.add(x, y, (byte) brightness);
 									}
