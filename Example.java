@@ -14,12 +14,12 @@ public class Example {
 		Sphere sph = new Sphere(new Point3(0, 0, 1), 1);
 		Box bx = new Box(new Point3(0, 0, -1), 1, 1, 1);
 
-		PointLight lght = new PointLight(new Point3(2, 3, 1), 2200, 10);
+		PointLight lght = new PointLight(new Point3(2, 3, 1), 400, 10, LightStyle.REALISTIC);
 
 		Scene sc = new Scene(new Geometry[] {bx, sph}, new PointLight[] {lght}, cam);
-		sc.stepIncrement = 0.05;
+		sc.stepIncrement = 0.02;
 
-		sc.multiThreadedRender(20, 20);
+		sc.multiThreadedRender(50, 50);
 
 		try {
 			film.save(new File("out.bmp"));
